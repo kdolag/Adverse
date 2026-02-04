@@ -1,4 +1,26 @@
 <!DOCTYPE html>
+<script>
+function switchTab(tab, event) {
+    // Update tab buttons
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    // use event.target safely
+    if (event && event.target) {
+        event.target.classList.add('active');
+    }
+
+    // Update tab content
+    document.querySelectorAll('.tab-content').forEach(content => {
+        content.classList.remove('active');
+    });
+    if (tab === 'server') {
+        document.getElementById('serverTab').classList.add('active');
+    } else if (tab === 'party') {
+        document.getElementById('partyTab').classList.add('active');
+    }
+}
+</script>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -332,4 +354,5 @@
         }
     </script>
 </body>
+
 </html>
