@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Listing - ARCADOTOPIA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .tab-container {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .tab-btn {
+            padding: 1rem 2rem;
+            background: rgba(15, 10, 31, 0.8);
+            border: 1px solid rgba(147, 51, 234, 0.3);
+            color: var(--text-secondary);
+            font-family: 'Chakra Petch', sans-serif;
+            font-weight: 600;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .tab-btn.active {
+            background: linear-gradient(135deg, var(--cosmic-purple), var(--cosmic-blue));
+            color: var(--text-primary);
+            border-color: var(--cosmic-purple);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .conditional-field {
+            display: none;
+        }
+        
+        .conditional-field.visible {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    
+    <header>
+        <nav>
+            <div class="logo">ARCADOTOPIA</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="servers.html">Servers</a></li>
+                <li><a href="parties.html">Parties</a></li>
+                <li><a href="submit.html" class="active">Submit</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="section">
+            <h2 class="section-title">Submit Your Listing</h2>
+            
+            <div class="form-container">
+                <div class="tab-container">
+                    <button class="tab-btn active" onclick="switchTab('server')">Submit Server</button>
+                    <button class="tab-btn" onclick="switchTab('party')">Create Party</button>
+                </div>
+                
+                <!-- Server Form -->
+                <div id="serverTab" class="tab-content active">
+                    <form onsubmit="return handleServerSubmit(event)">
+                        <div class="form-group">
+                            <label>Game Type <span class="required">*</span></label>
+                            <select id="gameType" onchange="handleGameTypeChange()" required>
+                                <option value="">Select game type</option>
+                                <option value="roblox">Roblox Game</option>
+                                <option value="other">Other Game</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Game Name <span class="required">*</span></label>
+                            <input type="text" placeholder="e.g., Minecraft, CS2, Rust" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Server/Game Description <span class="required" id="descRequired">*</span></label>
+                            <textarea id="serverDescription" placeholder="Describe your server, game modes, rules, etc." required></textarea>
+                            <small style="color: var(--text-secondary); display: block; margin-top: 0.5rem;">
+                                <span id="descNote">Required for Roblox games</span>
+                            </small>
+                        </div>
+                        
+                        <!-- Image Upload (Available for all) -->
+                        <div class="form-group">
+                            <label>Server Image <span id="imageRequired"></span></label>
+                            <div class="image-upload" onclick="document.getElementById('serverImage').click()">
+                                <p>Click to upload image</p>
+                                <small>Recommended: 1200x600px</small>
+                            </div>
+                            <input type="file" id="serverImage" accept="image/*" style="display: none;" onchange="previewImage(this, 'serverImagePreview')">
+                            <img id="serverImagePreview" class="image-preview" style="display: none;">
+                            <small style="color: var(--text-secondary); display: block; margin-top: 0.5rem;">
+                                <span id="imageNote">Compulsory for Roblox games</span>
+                            </small>
+                        </div>
+                        
+                        <!-- Video Upload (Optional for Roblox) -->
+                        <div class="form-group conditional-field" id="videoField">
+                            <label>Gameplay Video (Optional for Roblox)</label>
+                            <input type="url" id="videoUrl" placeholder="YouTube or video URL">
+                            <small style="color: var(--text-secondary); display: block; margin-top: 0.5rem;">
+                                Optional: Add a gameplay video for Roblox games
+                            </small>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Server IP/Address <span class="required">*</span></label>
+                            <input type="text" placeholder="e.g., play.example.com or 192.168.1.1:27015" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Max Players <span class="required">*</span></label>
+                            <input type="number" placeholder="e.g., 100" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Region <span class="required">*</span></label>
+                            <select required>
+                                <option value="">Select region</option>
+                                <option value="All">All</option>
+                                <option value="NA East">NA East</option>
+                                <option value="NA West">NA West</option>
+                                <option value="EU West">EU West</option>
+                                <option value="EU East">EU East</option>
+                                <option value="Asia">Asia</option>
+                                <option value="Oceania">Oceania</option>
+                                <option value="South America">South America</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Your Username (Owner) <span class="required">*</span></label>
+                            <input type="text" placeholder="Your in-game name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Contact Email <span class="required">*</span></label>
+                            <input type="email" placeholder="your@email.com" required>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+                            Submit Server
+                        </button>
+                    </form>
+                </div>
+                
+                <!-- Party Form -->
+                <div id="partyTab" class="tab-content">
+                    <form onsubmit="return handlePartySubmit(event)">
+                        <div class="form-group">
+                            <label>Game Name <span class="required">*</span></label>
+                            <input type="text" placeholder="e.g., Valorant, Apex Legends" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Party Description <span class="required">*</span></label>
+                            <textarea placeholder="What are you looking for? Ranked grind, casual play, etc." required></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Party Image (Optional)</label>
+                            <div class="image-upload" onclick="document.getElementById('partyImage').click()">
+                                <p>Click to upload image</p>
+                                <small>Optional but recommended</small>
+                            </div>
+                            <input type="file" id="partyImage" accept="image/*" style="display: none;" onchange="previewImage(this, 'partyImagePreview')">
+                            <img id="partyImagePreview" class="image-preview" style="display: none;">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Party Size <span class="required">*</span></label>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                                <div>
+                                    <input type="number" placeholder="Current members" min="1" required>
+                                    <small style="color: var(--text-secondary);">Current</small>
+                                </div>
+                                <div>
+                                    <input type="number" placeholder="Max members" min="2" required>
+                                    <small style="color: var(--text-secondary);">Maximum</small>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Rank/Skill Level</label>
+                            <input type="text" placeholder="e.g., Gold-Platinum, Diamond+">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Region <span class="required">*</span></label>
+                            <select required>
+                                <option value="">Select region</option>
+                                <option value="NA">North America</option>
+                                <option value="EU">Europe</option>
+                                <option value="Asia">Asia</option>
+                                <option value="OCE">Oceania</option>
+                                <option value="SA">South America</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Schedule <span class="required">*</span></label>
+                            <select required>
+                                <option value="">Select schedule</option>
+                                <option value="live">Playing Now</option>
+                                <option value="today">Today Evening</option>
+                                <option value="tomorrow">Tomorrow</option>
+                                <option value="weekend">This Weekend</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Your Username (Owner) <span class="required">*</span></label>
+                            <input type="text" placeholder="Your in-game name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Contact Method <span class="required">*</span></label>
+                            <input type="text" placeholder="Discord username, email, etc." required>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 1rem;">
+                            Create Party Listing
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Arcadotopia</h3>
+                <p>The premier destination for discovering game servers and finding players. Built by gamers, for gamers.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <a href="servers.html">Browse Servers</a>
+                <a href="parties.html">Find Parties</a>
+                <a href="submit.html">Submit Listing</a>
+                <a href="guidelines.html">Community Guidelines</a>
+            </div>
+            <div class="footer-section">
+                <h3>Support</h3>
+                <a href="help.html">Help Center</a>
+                <a href="report.html">Report Server</a>
+                <a href="contact.html">Contact Us</a>
+                <a href="api.html">API Docs</a>
+            </div>
+            <div class="footer-section">
+                <h3>Connect</h3>
+                <a href="#">Discord</a>
+                <a href="#">Twitter</a>
+                <a href="#">Reddit</a>
+                <a href="#">GitHub</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>> ARCADOTOPIA © 2026 | Connecting gamers worldwide</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        function switchTab(tab) {
+            // Update tab buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Update tab content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(tab + 'Tab').classList.add('active');
+        }
+        
+        function handleGameTypeChange() {
+            const gameType = document.getElementById('gameType').value;
+            const videoField = document.getElementById('videoField');
+            const imageRequired = document.getElementById('imageRequired');
+            const descRequired = document.getElementById('descRequired');
+            const imageNote = document.getElementById('imageNote');
+            const descNote = document.getElementById('descNote');
+            const serverImage = document.getElementById('serverImage');
+            const serverDescription = document.getElementById('serverDescription');
+            
+            if (gameType === 'roblox') {
+                // Roblox game selected
+                videoField.classList.add('visible');
+                imageRequired.textContent = '*';
+                imageRequired.style.display = 'inline';
+                imageNote.textContent = 'Compulsory for Roblox games';
+                descNote.textContent = 'Compulsory for Roblox games';
+                serverImage.required = true;
+                serverDescription.required = true;
+            } else if (gameType === 'other') {
+                // Other game selected
+                videoField.classList.remove('visible');
+                imageRequired.textContent = '';
+                imageRequired.style.display = 'none';
+                imageNote.textContent = 'Optional for other games';
+                descNote.textContent = 'Describe your server';
+                serverImage.required = false;
+                serverDescription.required = true;
+            } else {
+                // No selection
+                videoField.classList.remove('visible');
+                imageRequired.textContent = '';
+                serverImage.required = false;
+            }
+        }
+    </script>
+</body>
+</html>
